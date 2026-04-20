@@ -1,0 +1,137 @@
+import java.util.*;
+
+// Main Class
+public class EmployeeMain {
+
+    // Employee Class
+    static class Employee {
+        int id;
+        String name;
+        double salary;
+
+        public Employee(int id, String name, double salary) {
+            this.id = id;
+            this.name = name;
+            this.salary = salary;
+        }
+
+        public int getId() { return id; }
+        public String getName() { return name; }
+        public double getSalary() { return salary; }
+
+        public void setName(String name) { this.name = name; }
+        public void setSalary(double salary) { this.salary = salary; }
+
+        public void display() {
+            System.out.println("ID: " + id + ", Name: " + name + ", Salary: " + salary);
+        }
+    }
+
+    // Service Class
+    static class EmployeeService {
+        private List<Employee> empList = new ArrayList<>();
+
+        public void addEmployee(Employee emp) {
+            empList.add(emp);
+            System.out.println("Employee Added!");
+        }
+
+        public void viewEmployees() {
+            if (empList.isEmpty()) {
+                System.out.println("No Employees Found!");
+                return;
+            }
+            for (Employee e : empList) {
+                e.display();
+            }
+        }
+
+        public Employee searchEmployee(int id) {
+            for (Employee e : empList) {
+                if (e.getId() == id) {
+                    return e;
+                }
+            }
+            return null;
+        }
+
+        public void deleteEmployee(int id) {
+            Employee emp = searchEmployee(id);
+
+            if (emp != null) {
+                empList.remove(emp);
+                System.out.println("Employee Deleted!");
+            } else {
+                System.out.println("Employee Not Found!");
+            }
+        }
+
+        public void updateEmployee(int id, String name, double salary) {
+            Employee emp = searchEmployee(id);
+
+            if (emp != null) {
+                emp.setName(name);
+                emp.setSalary(salary);
+                System.out.println("Employee Updated!");
+            } else {
+                System.out.println("Employee Not Found!");
+            }
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        EmployeeService service = new EmployeeService();
+
+        while (true) {
+            System.out.println("\n1. Add\n2. View\n3. Search\n4. Update\n5. Delete\n6. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Salary: ");
+                    double salary = sc.nextDouble();
+                    service.addEmployee(new Employee(id, name, salary));
+                    break;
+
+                case 2:
+                    service.viewEmployees();
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID: ");
+                    Employee e = service.searchEmployee(sc.nextInt());
+                    if (e != null) e.display();
+                    else System.out.println("Not Found");
+                    break;
+
+                case 4:
+                    System.out.print("Enter ID: ");
+                    int uid = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter New Name: ");
+                    String uname = sc.nextLine();
+                    System.out.print("Enter New Salary: ");
+                    double usalary = sc.nextDouble();
+                    service.updateEmployee(uid, uname, usalary);
+                    break;
+
+                case 5:
+                    System.out.print("Enter ID: ");
+                    service.deleteEmployee(sc.nextInt());
+                    break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+            }
+        }
+    }
+}
